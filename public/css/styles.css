@@ -1,0 +1,75 @@
+body {
+    background: url('../img/wallpaper.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+}
+
+html, body {
+    height: 100%;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.322); /* Blanco con opacidad para difuminar */
+    backdrop-filter: blur(2.5px); /* Ajusta el valor del desenfoque según sea necesario */
+    z-index: -1;
+}
+
+.d-flex.flex-column.min-vh-100 {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #526e9d; /* Morado */
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar .nav-link:hover {
+    color: #8cc2ef !important; /* Un tono más claro de morado */
+}
+
+.bg-light {
+    background-color: #0f1c2e !important;
+}
+
+.footer {
+    background-color: #333; /* Gris oscuro */
+    color: #ccc;
+}
+
+.footer .text-muted {
+    color: #ffffff !important;
+}
+
+.btn-primary {
+    background-color: #af87f8;
+    border-color: #6f42c1;
+}
+
+.btn-primary:hover {
+    background-color: #5937a6;
+    border-color: #5937a6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #9cc2e3;
+}
+
+a {
+    color: #6f42c1;
+}
+
+a:hover {
+    color: #5937a6;
+}
