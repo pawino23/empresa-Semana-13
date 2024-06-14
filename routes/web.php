@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PersonaController;
 
 Route::get('/', function () {
     return view('home');
@@ -25,3 +26,6 @@ Route::get('/blog/{param?}', function ($param = null) {
 Route::get('/contacto', function () {
     return view('contacto');
 })->name('contacto');
+
+// Rutas para PersonaController
+Route::resource('personas', PersonaController::class);
