@@ -14,6 +14,7 @@
                 <th>Edad</th>
                 <th>Sueldo</th>
                 <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,14 @@
                     <td>{{ $persona->nPerEdad }}</td>
                     <td>{{ $persona->nPerSueldo }}</td>
                     <td>{{ $persona->nPerEstado ? 'Activo' : 'Inactivo' }}</td>
+                    <td>
+                        <a href="{{ route('personas.edit', $persona->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ route('personas.destroy', $persona->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta persona?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

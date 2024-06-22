@@ -72,6 +72,18 @@ body::before {
     border-color: #5937a6;
 }
 
+.btn-second {
+    background-color: #f1e66c;
+    border-color: #f8e53c;
+    height: 30px;
+    padding: 2px;
+}
+
+.btn-second:hover {
+    background-color: #f1d901;
+    border-color: #f1d901;
+}
+
 h1, h2, h3, h4, h5, h6 {
     color: #9cc2e3;
 }

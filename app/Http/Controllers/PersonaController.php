@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FormRequestValidation;
 use Illuminate\Http\Request;
 use App\Models\Persona;
+use App\Http\Requests\FormRequestValidation;
 
 class PersonaController extends Controller
 {
@@ -15,10 +15,7 @@ class PersonaController extends Controller
 
     public function store(FormRequestValidation $request)
     {
-        // Validar y almacenar en la BD
         Persona::create($request->validated());
-
-        // Redirigir a la vista index
         return redirect()->route('personas.index');
     }
 
@@ -26,5 +23,25 @@ class PersonaController extends Controller
     {
         $personas = Persona::all();
         return view('personas.index', compact('personas'));
+    }
+
+    public function edit($id)
+    {
+        $persona = Persona::findOrFail($id);
+        return view('personas.edit', compact('persona'));
+    }
+
+    public function update(FormRequestValidation $request, $id)
+    {
+        $persona = Persona::findOrFail($id);
+        $persona->update($request->validated());
+        return redirect()->route('personas.index');
+    }
+
+    public function destroy($id)
+    {
+        $persona = Persona::findOrFail($id);
+        $persona->delete();
+        return redirect()->route('personas.index');
     }
 }
