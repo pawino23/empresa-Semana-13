@@ -3,6 +3,15 @@
 @section('title', 'Home')
 
 @section('content')
-    <h1>Bienvenido a nuestra Empresa: Pawino</h1>
-    <p>Contenido de la página de inicio.</p>
+    <tr>
+        <td colspan="4">Bienvenido a nuestra Empresa:</td>
+    </tr>
+
+    <tr>
+        <td colspan="4">
+            @auth
+                {{ auth()->user()->name }}
+            @endauth
+        </td>
+    </tr>
 @endsection

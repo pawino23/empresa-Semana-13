@@ -24,9 +24,14 @@ Route::get('/blog/{param?}', function ($param = null) {
     return view('blog', ['param' => $param]);
 })->where('param', '[0-9]+')->name('blog');
 
+// Rutas para PersonaController
+Route::resource('personas', PersonaController::class)->names('personas')->middleware('auth');
+
 // Rutas para ContactoController
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
+Auth::routes();
 
-// Rutas para PersonaController
-Route::resource('personas', PersonaController::class);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes(['register' => false]);

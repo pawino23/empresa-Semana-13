@@ -8,6 +8,10 @@ use App\Http\Requests\FormRequestValidation;
 
 class PersonaController extends Controller
 {
+    public function __construc(){
+        $this->middleware('auth')->only('create','edit','detroy');
+    }
+
     public function create()
     {
         return view('personas.create');
@@ -16,7 +20,7 @@ class PersonaController extends Controller
     public function store(FormRequestValidation $request)
     {
         Persona::create($request->validated());
-        return redirect()->route('personas.index');
+        return redirect()->route('personas.index')->with('estado', 'La Persona se creó correctamente');
     }
 
     public function index()
@@ -35,13 +39,13 @@ class PersonaController extends Controller
     {
         $persona = Persona::findOrFail($id);
         $persona->update($request->validated());
-        return redirect()->route('personas.index');
+        return redirect()->route('personas.index')->with('estado', 'La Persona se actualizó correctamente');
     }
 
     public function destroy($id)
     {
         $persona = Persona::findOrFail($id);
         $persona->delete();
-        return redirect()->route('personas.index');
+        return redirect()->route('personas.index')->with('estado', 'La Persona se eliminó correctamente');
     }
 }
