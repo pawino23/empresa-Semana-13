@@ -5,10 +5,10 @@
 @section('content')
 <div class="container">
     <h2>Crear Persona</h2>
-    <form action="{{ route('personas.store') }}" method="POST">
+    <form action="{{ route('personas.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @include('personas.form')
         <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+    </form>    
 </div>
 @endsection

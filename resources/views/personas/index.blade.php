@@ -10,6 +10,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Foto</th> 
                 <th>Apellido</th>
                 <th>Nombre</th>
                 <th>Dirección</th>
@@ -24,6 +25,14 @@
             @foreach ($personas as $persona)
                 @auth
                     <tr>
+                        <td>
+                            @if ($persona->foto)
+                                <img src="{{ asset('storage/' . $persona->foto) }}" alt="Foto de {{ $persona->cperApellido }}" style="max-width: 100px; height: auto;">
+                            @else
+                                <p>No foto</p>
+                            @endif
+                        </td>
+                        
                         <td>{{ $persona->cperApellido }}</td>
                         <td>{{ $persona->cPerNombre }}</td>
                         <td>{{ $persona->cPerDireccion }}</td>

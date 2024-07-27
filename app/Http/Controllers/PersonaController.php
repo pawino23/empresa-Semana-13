@@ -8,8 +8,8 @@ use App\Http\Requests\FormRequestValidation;
 
 class PersonaController extends Controller
 {
-    public function __construc(){
-        $this->middleware('auth')->only('create','edit','detroy');
+    public function __construct(){
+        $this->middleware('auth')->only('create', 'edit', 'destroy');
     }
 
     public function create()
@@ -19,7 +19,13 @@ class PersonaController extends Controller
 
     public function store(FormRequestValidation $request)
     {
-        Persona::create($request->validated());
+        $validated = $request->validated();
+        
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
+
+        Persona::create($validated);
         return redirect()->route('personas.index')->with('estado', 'La Persona se creó correctamente');
     }
 
@@ -38,13 +44,27 @@ class PersonaController extends Controller
     public function update(FormRequestValidation $request, $id)
     {
         $persona = Persona::findOrFail($id);
-        $persona->update($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('foto')) {
+            // Eliminar la imagen anterior si existe
+            if ($persona->foto) {
+                \Storage::disk('public')->delete($persona->foto);
+            }
+            $validated['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
+
+        $persona->update($validated);
         return redirect()->route('personas.index')->with('estado', 'La Persona se actualizó correctamente');
     }
 
     public function destroy($id)
     {
         $persona = Persona::findOrFail($id);
+        // Eliminar la imagen si existe
+        if ($persona->foto) {
+            \Storage::disk('public')->delete($persona->foto);
+        }
         $persona->delete();
         return redirect()->route('personas.index')->with('estado', 'La Persona se eliminó correctamente');
     }

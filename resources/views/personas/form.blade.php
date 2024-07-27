@@ -1,6 +1,20 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
+            <label for="foto">Foto</label>
+            <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
+            @error('foto')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+</div>
+
+<!-- Resto del código existente del formulario -->
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
             <label for="cperApellido">Apellido</label>
             <input type="text" class="form-control @error('cperApellido') is-invalid @enderror" id="cperApellido" name="cperApellido" value="{{ old('cperApellido', $persona->cperApellido ?? '') }}">
             @error('cperApellido')
@@ -18,6 +32,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
