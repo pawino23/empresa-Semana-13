@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 use App\Http\Requests\FormRequestValidation;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use App\Events\PersonaSaved;
 
 class PersonaController extends Controller
 {
@@ -22,10 +25,24 @@ class PersonaController extends Controller
         $validated = $request->validated();
         
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('fotos', 'public');
+            $path = $request->file('foto')->store('fotos', 'public');
+            
+            // Manipulación de la imagen
+            $image = Image::make(Storage::get('public/' . $path))
+                ->widen(600)
+                ->limitColors(255)
+                ->encode();
+
+            Storage::put('public/' . $path, (string) $image);
+
+            $validated['foto'] = $path;
         }
 
-        Persona::create($validated);
+        $persona = Persona::create($validated);
+        
+        // Disparar el evento PersonaSaved
+        PersonaSaved::dispatch($persona);
+        
         return redirect()->route('personas.index')->with('estado', 'La Persona se creó correctamente');
     }
 
@@ -49,12 +66,27 @@ class PersonaController extends Controller
         if ($request->hasFile('foto')) {
             // Eliminar la imagen anterior si existe
             if ($persona->foto) {
-                \Storage::disk('public')->delete($persona->foto);
+                Storage::disk('public')->delete($persona->foto);
             }
-            $validated['foto'] = $request->file('foto')->store('fotos', 'public');
+            
+            $path = $request->file('foto')->store('fotos', 'public');
+            
+            // Manipulación de la imagen
+            $image = Image::make(Storage::get('public/' . $path))
+                ->widen(600)
+                ->limitColors(255)
+                ->encode();
+
+            Storage::put('public/' . $path, (string) $image);
+
+            $validated['foto'] = $path;
         }
 
         $persona->update($validated);
+        
+        // Disparar el evento PersonaSaved
+        PersonaSaved::dispatch($persona);
+        
         return redirect()->route('personas.index')->with('estado', 'La Persona se actualizó correctamente');
     }
 
@@ -63,7 +95,7 @@ class PersonaController extends Controller
         $persona = Persona::findOrFail($id);
         // Eliminar la imagen si existe
         if ($persona->foto) {
-            \Storage::disk('public')->delete($persona->foto);
+            Storage::disk('public')->delete($persona->foto);
         }
         $persona->delete();
         return redirect()->route('personas.index')->with('estado', 'La Persona se eliminó correctamente');
